@@ -29,20 +29,20 @@ class App extends React.Component {
   render() {
     return (
       <Layout style={ { height: "100%"} }>
-        <Sider trigger={null} collapsible collapsed={this.state.collapsed} width="300px">
-          <div className="logo" style={ { textAlign: "center", color: "white", fontSize: 20, margin: 20}}>固体物理PROJECT</div>
+        <Sider trigger={null} collapsible collapsed={this.state.collapsed} width="250px">
+          <div className="logo" style={ { textAlign: "left", color: "white", fontSize: 20, margin: 20}}>固体物理PROJECT</div>
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
               <Menu.Item key="1" icon={<DesktopOutlined/>}>
                 首页
               </Menu.Item>
-              <SubMenu key="sub1" icon={<UserOutlined />} title="Crystal">
+              <SubMenu key="sub1" icon={<UserOutlined />} title="晶体">
                 <Menu.Item key="3">坐标转换</Menu.Item>
                 <Menu.Item key="4">对称操作</Menu.Item>
                 <Menu.Item key="5">and so on</Menu.Item>
               </SubMenu>
-              <SubMenu key="sub2" icon={<TeamOutlined />} title="Phonon">
-                <Menu.Item key="6">一维单原子链</Menu.Item>
-                <Menu.Item key="7">一维双原子链</Menu.Item>
+              <SubMenu key="sub2" icon={<TeamOutlined />} title="声子">
+                <Menu.Item key="6">一维单原子链模拟</Menu.Item>
+                <Menu.Item key="7">一维双原子链模拟</Menu.Item>
                 <Menu.Item key="8">and so on</Menu.Item>
               </SubMenu>
           </Menu>
@@ -57,7 +57,7 @@ class App extends React.Component {
           <Content
             className="site-layout-background"
             style={{
-              margin: '24px 16px',
+              margin: '2px 1px',
               padding: 24,
             }}
           >
