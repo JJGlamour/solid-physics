@@ -12,12 +12,22 @@ import {
   DesktopOutlined,
   PieChartOutlined
 } from '@ant-design/icons';
+
+import { BrowserRouter as Router, Route, Link, HashRouter} from "react-router-dom";
+import Home from "./components/home";
+import Coordinate from "./components/coordinate";
+import OneAtom from "./components/oneatom";
+import TwoAtom from  "./components/twoatom";
+import Symmetry from './components/symmetry';
+
 const { Header, Content, Sider } = Layout;
 const { SubMenu } = Menu;
 
 class App extends React.Component {
   state = {
     collapsed: false,
+    selectedKey: window.location.hash.substr(1).split('/')[2],
+    openKey: window.location.hash.substr(1).split('/')[1]
   };
 
   toggle = () => {
@@ -29,23 +39,25 @@ class App extends React.Component {
   render() {
     return (
       <Layout style={ { height: "100%"} }>
-        <Sider trigger={null} collapsible collapsed={this.state.collapsed} width="250px">
-          <div className="logo" style={ { textAlign: "left", color: "white", fontSize: 20, margin: 20}}>固体物理PROJECT</div>
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-              <Menu.Item key="1" icon={<DesktopOutlined/>}>
-                首页
-              </Menu.Item>
-              <SubMenu key="sub1" icon={<UserOutlined />} title="晶体">
-                <Menu.Item key="3">坐标转换</Menu.Item>
-                <Menu.Item key="4">对称操作</Menu.Item>
-                <Menu.Item key="5">and so on</Menu.Item>
-              </SubMenu>
-              <SubMenu key="sub2" icon={<TeamOutlined />} title="声子">
-                <Menu.Item key="6">一维单原子链模拟</Menu.Item>
-                <Menu.Item key="7">一维双原子链模拟</Menu.Item>
-                <Menu.Item key="8">and so on</Menu.Item>
-              </SubMenu>
-          </Menu>
+        <Sider trigger={null} collapsible collapsed={this.state.collapsed} width="230px" theme="light">
+          <div className="logo" style={ { fontSize: 20, margin: 20, }}><p style={ { whiteSpace: "nowrap", overflow: "hidden" }}>固体物理PROJECT</p></div>
+           <HashRouter>
+              <Menu mode="inline" defaultSelectedKeys={[ this.state.selectedKey ]} defaultOpenKeys={[ this.state.openKey ]}>
+                  <Menu.Item key="/home" icon={<DesktopOutlined/>}>
+                    首页
+                  </Menu.Item>
+                  <SubMenu key="crystal" icon={<UserOutlined />} title="晶体">
+                    <Menu.Item key="coordinate"><Link to="/crystal/coordinate">坐标转换</Link></Menu.Item>
+                    <Menu.Item key="symmetry"><Link to="/crystal/symmetry">对称操作</Link></Menu.Item>
+                    <Menu.Item key="5">and so on</Menu.Item>
+                  </SubMenu>
+                  <SubMenu key="phonon" icon={<TeamOutlined />} title="声子">
+                    <Menu.Item key="one-atom"><Link to="/phonon/one-atom">一维单原子链模拟</Link></Menu.Item>
+                    <Menu.Item key="two-atom"><Link to="/phonon/two-atom">一维双原子链模拟</Link></Menu.Item>
+                    <Menu.Item key="8">and so on</Menu.Item>
+                  </SubMenu>
+              </Menu>
+            </HashRouter>
         </Sider>
         <Layout className="site-layout">
           <Header className="site-layout-background" style={{ padding: 0 }}>
@@ -61,7 +73,15 @@ class App extends React.Component {
               padding: 24,
             }}
           >
-            Contenttest
+          <HashRouter>
+            <div>
+              <Route path="/home" component={Home}></Route>
+              <Route path="/crystal/coordinate" component={Coordinate}></Route>
+              <Route path="/crystal/symmetry" component={Symmetry}></Route>
+              <Route path="/phonon/one-atom" component={OneAtom}></Route>
+              <Route path="/phonon/two-atom" component={TwoAtom}></Route>
+            </div>
+          </HashRouter>
           </Content>
         </Layout>
       </Layout> 
