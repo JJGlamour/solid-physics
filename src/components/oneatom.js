@@ -1,5 +1,6 @@
 import React from "react";
 import { InputNumber, Slider, Row, Col, Button } from "antd";
+import { CaretRightOutlined } from  "@ant-design/icons";
 
 
 class OneAtom extends React.Component {
@@ -13,7 +14,6 @@ class OneAtom extends React.Component {
             q: Math.PI,
             atomsize: 20,
             distance: 100,
-            interval: undefined
         };
         this.handleChangeQ = this.handleChangeQ.bind(this);
         this.handleChangeN = this.handleChangeN.bind(this);
@@ -24,20 +24,54 @@ class OneAtom extends React.Component {
 
     handleChangeQ(q) {
         this.setState({ q: q });
+        clearInterval(this.timerID);
     }
 
     handleChangeN(n) {
         this.setState({ n: n });
-        // clearInterval(this.state.interval);
+        clearInterval(this.timerID);
     }
     handleChangeSize(size) {
         this.setState({ atomsize: size })
+        clearInterval(this.timerID);
     }
     handleChangeDistance(dis) {
         this.setState( { distance: dis } )
+        clearInterval(this.timerID);
     }
 
+    // componentDidMount() {
+    //     console.log("渲染");
+    //     function moveOneAtom(elem, y) {
+    //         elem.style.bottom = y + "px";
+    //     }
+    //     const q = this.state.q;
+    //     let t = 0;
+    //     let elements = [];
+
+    //     // 提前找出元素消除时延问题
+    //     for(let i=0; i < this.state.n; i++){
+    //         elements.push(document.querySelector(`#atom${i}`));
+    //     }
+    //     this.timerID = setInterval(() => {
+    //         for(let i = 0; i < this.state.n; i++) {
+    //             let y = Math.cos(q *(i+1)  - (1/50) * Math.abs(Math.sin(q/2)) * t);
+    //             // console.log(y)
+    //             moveOneAtom(elements[i], y * 70);
+    //         }
+    //         t++;
+    //     }, 1);
+    //     console.log(this)
+    //     // this.setState({ interval: start });
+    //     console.log(this.state)      
+    // }
+    // componentWillUnmount() {
+    //     clearInterval(this.timerID);
+    // }
+
+
     move() {
+        clearInterval(this.timerID);
         function moveOneAtom(elem, y) {
             elem.style.bottom = y + "px";
         }
@@ -49,7 +83,7 @@ class OneAtom extends React.Component {
         for(let i=0; i < this.state.n; i++){
             elements.push(document.querySelector(`#atom${i}`));
         }
-        const start = setInterval(() => {
+        this.timerID = setInterval(() => {
             for(let i = 0; i < this.state.n; i++) {
                 let y = Math.cos(q *(i+1)  - (1/50) * Math.abs(Math.sin(q/2)) * t);
                 // console.log(y)
@@ -57,7 +91,9 @@ class OneAtom extends React.Component {
             }
             t++;
         }, 1);
-        console.log(start)
+        // console.log(this)
+        
+        // 一旦有setState操作，动画就会停止执行
         // this.setState({ interval: start });
     }
 
@@ -80,21 +116,20 @@ class OneAtom extends React.Component {
             </div>            
             return box
         }
-
         return (
             <div>
                 <Row>
-                    <Col span={3} style={{ overflow: "hidden"}}>原子数(0,20)：</Col>
+                    <Col span={3} style={{ overflow: "hidden"}}>原子数(0,30)：</Col>
                     <Col span={4}>
-                        <InputNumber min={1} max={20} onChange={this.handleChangeN} defaultValue={5}></InputNumber>
+                        <InputNumber min={1} max={30} onChange={this.handleChangeN} defaultValue={5}></InputNumber>
                     </Col>
                     <Col span={3} style={{ overflow: "hidden"}}>原子大小：</Col>
                     <Col span={4}>
-                        <InputNumber min={10} max={40} onChange={this.handleChangeSize} defaultValue={20}></InputNumber>
+                        <InputNumber min={5} max={80} onChange={this.handleChangeSize} defaultValue={20}></InputNumber>
                     </Col>
                     <Col span={3} style={{ overflow: "hidden"}}>原子间距：</Col>
                     <Col span={4}>
-                        <InputNumber min={50} max={200} onChange={this.handleChangeDistance} defaultValue={100}></InputNumber>
+                        <InputNumber min={30} max={300} onChange={this.handleChangeDistance} defaultValue={100}></InputNumber>
                     </Col>
                 </Row>
                 <br></br>
@@ -108,8 +143,19 @@ class OneAtom extends React.Component {
                 </Row>
                 <br></br>
                 <Row>
-                    <Button type="primary" shape="round" onClick={this.move}>开始</Button>
+                    <Button type="primary" shape="round" onClick={this.move} icon={<CaretRightOutlined />}>开始</Button>
                     <Box></Box>
+                </Row>
+                <Row>
+                    <div style={{ position: "relative", top: "120px"}}>
+                        <p>备注：</p>
+                        <p>
+                            1. 在一维单原子链中，取原子间距a=1，故第一布里渊区中波矢取值范围为-π到π；
+                        </p>
+                        <p>
+                            2. 参数中的原子大小和原子间距均为页面展示效果；
+                        </p>
+                    </div>
                 </Row>
             </div>
         )

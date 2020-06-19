@@ -5,12 +5,9 @@ import 'antd/dist/antd.css';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  TeamOutlined,
+  MinusSquareOutlined,
   DesktopOutlined,
-  PieChartOutlined
+  SmileOutlined
 } from '@ant-design/icons';
 
 import { BrowserRouter as Router, Route, Link, HashRouter} from "react-router-dom";
@@ -26,7 +23,7 @@ const { SubMenu } = Menu;
 class App extends React.Component {
   state = {
     collapsed: false,
-    selectedKey: window.location.hash.substr(1).split('/')[2],
+    selectedKey: window.location.hash.substr(1).split('/').pop(),
     openKey: window.location.hash.substr(1).split('/')[1]
   };
 
@@ -43,15 +40,15 @@ class App extends React.Component {
           <div className="logo" style={ { fontSize: 20, margin: 20, }}><p style={ { whiteSpace: "nowrap", overflow: "hidden" }}>固体物理PROJECT</p></div>
            <HashRouter>
               <Menu mode="inline" defaultSelectedKeys={[ this.state.selectedKey ]} defaultOpenKeys={[ this.state.openKey ]}>
-                  <Menu.Item key="/home" icon={<DesktopOutlined/>}>
-                    首页
+                  <Menu.Item key="home" icon={<DesktopOutlined/>}>
+                    <Link to="/home">首页</Link>
                   </Menu.Item>
-                  <SubMenu key="crystal" icon={<UserOutlined />} title="晶体">
+                  <SubMenu key="crystal" icon={<MinusSquareOutlined />} title="晶体">
                     <Menu.Item key="coordinate"><Link to="/crystal/coordinate">坐标转换</Link></Menu.Item>
                     <Menu.Item key="symmetry"><Link to="/crystal/symmetry">对称操作</Link></Menu.Item>
                     <Menu.Item key="5">and so on</Menu.Item>
                   </SubMenu>
-                  <SubMenu key="phonon" icon={<TeamOutlined />} title="声子">
+                  <SubMenu key="phonon" icon={<SmileOutlined />} title="声子">
                     <Menu.Item key="one-atom"><Link to="/phonon/one-atom">一维单原子链模拟</Link></Menu.Item>
                     <Menu.Item key="two-atom"><Link to="/phonon/two-atom">一维双原子链模拟</Link></Menu.Item>
                     <Menu.Item key="8">and so on</Menu.Item>

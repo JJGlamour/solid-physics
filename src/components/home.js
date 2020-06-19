@@ -4,7 +4,7 @@ class Home extends React.Component {
    render() {
        return (
            <div>
-               首页
+               首页介绍
            </div>
        )
    }
