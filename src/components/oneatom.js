@@ -65,10 +65,12 @@ class OneAtom extends React.Component {
     //     // this.setState({ interval: start });
     //     console.log(this.state)      
     // }
-    // componentWillUnmount() {
-    //     clearInterval(this.timerID);
-    // }
-
+    componentWillUnmount() {
+        // console.log("单原子组件卸载");
+        // !!!
+        // 不清除则会存在内存泄漏问题，导致页面占用内存过大
+        clearInterval(this.timerID);
+    }
 
     move() {
         clearInterval(this.timerID);
@@ -86,12 +88,12 @@ class OneAtom extends React.Component {
         this.timerID = setInterval(() => {
             for(let i = 0; i < this.state.n; i++) {
                 let y = Math.cos(q *(i+1)  - (1/50) * Math.abs(Math.sin(q/2)) * t);
-                // console.log(y)
+                console.log(`${i}原子:${String(y).substr(0,8)}`);
                 moveOneAtom(elements[i], y * 70);
             }
             t++;
         }, 1);
-        // console.log(this)
+        //console.log("单原子interval ID: ", this.timerID);
         
         // 一旦有setState操作，动画就会停止执行
         // this.setState({ interval: start });
@@ -108,7 +110,7 @@ class OneAtom extends React.Component {
             const atoms = ns.map((i) => 
                 <div 
                 style={{ position: "absolute", width: `${state.atomsize}px`, height: `${state.atomsize}px`,
-                background: "blue", bottom: "0px", left: `${state.distance*i}px`, borderRadius: `${state.atomsize/2}px`
+                background: "rgb(30 144 255)", bottom: "0px", left: `${state.distance*i}px`, borderRadius: `${state.atomsize/2}px`
                 }} key={i} id={`atom${i}`}></div>
             )
             const box = <div style={{ height: "200px", position: "relative" }}>
@@ -119,17 +121,17 @@ class OneAtom extends React.Component {
         return (
             <div>
                 <Row>
-                    <Col span={3} style={{ overflow: "hidden"}}>原子数(0,30)：</Col>
+                    <Col span={3} style={{ overflow: "hidden"}}>原子数(0,100)：</Col>
                     <Col span={4}>
-                        <InputNumber min={1} max={30} onChange={this.handleChangeN} defaultValue={5}></InputNumber>
+                        <InputNumber min={1} max={100} onChange={this.handleChangeN} defaultValue={5}></InputNumber>
                     </Col>
                     <Col span={3} style={{ overflow: "hidden"}}>原子大小：</Col>
                     <Col span={4}>
-                        <InputNumber min={5} max={80} onChange={this.handleChangeSize} defaultValue={20}></InputNumber>
+                        <InputNumber min={5} max={100} onChange={this.handleChangeSize} defaultValue={20}></InputNumber>
                     </Col>
                     <Col span={3} style={{ overflow: "hidden"}}>原子间距：</Col>
                     <Col span={4}>
-                        <InputNumber min={30} max={300} onChange={this.handleChangeDistance} defaultValue={100}></InputNumber>
+                        <InputNumber min={10} max={500} onChange={this.handleChangeDistance} defaultValue={100}></InputNumber>
                     </Col>
                 </Row>
                 <br></br>
@@ -143,17 +145,23 @@ class OneAtom extends React.Component {
                 </Row>
                 <br></br>
                 <Row>
-                    <Button type="primary" shape="round" onClick={this.move} icon={<CaretRightOutlined />}>开始</Button>
+                    <Button type="primary" shape="round" onClick={this.move} icon={<CaretRightOutlined />}>开始模拟</Button>
                     <Box></Box>
                 </Row>
                 <Row>
                     <div style={{ position: "relative", top: "120px"}}>
                         <p>备注：</p>
                         <p>
-                            1. 在一维单原子链中，取原子间距a=1，故第一布里渊区中波矢取值范围为-π到π；
+                            1. 在一维单原子链中，色散关系为<span style={{color: "red"}}>ω(q)=2×sqrt(β/M)×|sin(qa/2)|</span>；为简便计算，此处取原子间距a=1，β/M=1，故色散关系为<span style={{color: "red"}}>ω(q)=2|sin(q/2)|</span>；
                         </p>
                         <p>
-                            2. 参数中的原子大小和原子间距均为页面展示效果；
+                            2. 根据格波解<span style={{color: "red"}}>u=A×exp[i×(qla-ωt)]</span>来模拟原子的振动情况；
+                        </p>
+                        <p>
+                            3. 两个波矢相差一个倒格矢的波，其运动情况相同，故q取第一布里渊区中的范围，即-π到π；
+                        </p>
+                        <p>
+                            4. 参数中的原子大小和原子间距均为页面展示效果；
                         </p>
                     </div>
                 </Row>

@@ -35,7 +35,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <Layout style={ { height: "100%"} }>
+      <Layout style={ { height: "150%"} }>
         <Sider trigger={null} collapsible collapsed={this.state.collapsed} width="230px" theme="light">
           <div className="logo" style={ { fontSize: 20, margin: 20, }}><p style={ { whiteSpace: "nowrap", overflow: "hidden" }}>固体物理PROJECT</p></div>
            <HashRouter>
