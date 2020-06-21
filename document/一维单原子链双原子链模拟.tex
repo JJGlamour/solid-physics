@@ -1,0 +1,41 @@
+\documentclass[UTF8]{article}
+\usepackage{ctex}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{amsmath,xcolor}
+\usepackage{cases}
+\usepackage{array}
+\usepackage{listings}
+\lstset{language=Python}
+\lstset{breaklines}
+\lstset{extendedchars=false}
+\setcounter{MaxMatrixCols}{14}
+\usepackage[colorlinks,linkcolor=black]{hyperref}
+\usepackage{geometry}
+\setlength{\arraycolsep}{0.5pt}
+\geometry{left=3.0cm,right=3.0cm,top=2.5cm,bottom=2.5cm}
+\title{模拟一维单原子链和双原子链的振动}   %输入标题
+\author{171870624 郭俊杰\\南京大学$\quad$现代工程与应用科学学院}   %输入名字
+\date{\today}    %日期
+\begin{document}
+\maketitle
+
+\begin{abstract}
+在周期晶格中存在类波解，由于晶格的不连续性，波的振幅只在原子的格点上有定义，也就是格波。一个包括3N个自由度的周期性结构，存在3N个独立的简正模，等价于3N个独立的格波。在一维单原子链和一维双原子链中主要考虑最简单的晶格模型，即每个元胞中只有一个原子和两个原子。本文主要在计算求得一维单原子链和双原子链的色散关系的基础之上，通过其各自的格波解对原子偏移平衡位置情况进行模拟。程序采用基于JavaScript的React.js库编写，可在web上直接查看振动效果，且可动态调节波矢q和双原子质量比m/M。 \\
+\par\textbf{关键词: } 格波；一维单原子链；一维双原子链；色散关系；JavaScript
+\end{abstract}
+
+
+\section{引言}
+原子结合成晶体，当原子距离增大时，会出现某种吸引力；当原子距离减小时，会出现由于泡利不相容原理引起的电子云的排斥力，这两者之间的平衡决定了原子的平衡间距，这是在T=0K时静态的研究，而在有限温度下，原子都是在平衡位置附近做振动，从此种原子振动的角度出发讨论晶体的宏观物理性质，就是晶格动力学。原子之间的振动是相互联系在一起的，这种联系在一起的振动在晶体中格点处形成各种模式的波，也就是格波。在振动非常弱的时候，这种相互作用可以认为是简谐的。
+
+\subsection{一维单原子链}
+一维单原子链为最简单的晶格模型，原子质量为M，间距为a，原子沿链的方向振动，第n个原子其偏离平衡位置的位移为$u_n$，$\beta_p$为距离为p的两原子之间的力常数，在简谐近似下，第n个原子受到的合力为$$F_n = \sum_p\beta_p(u_{n+p}-u_n)$$根据牛顿力学，第n个原子的运动方程是$$M\frac{\mathrm{d}^2u_n}{\mathrm{d}t^2}=\sum_p\beta_p(u_{n+p}-u_n)$$只考虑最近邻近似，即p=$\pm$1，且考虑到平移对称性有$\beta_{+1}=\beta_{-1}=\beta$，则原子运动方程简化为$$M\frac{\mathrm{d}^2u_n}{\mathrm{d}t^2}=\beta(u_{n+1}+u_{n-1}-2u_{n})$$其中n=0，$\pm$1，$\pm$2，...，$\pm\infty$，再考虑格波解$$u_l=Ae^{i(qna-\omega t)}$$将其带入最紧邻近似下的原子运动方程有$$-M\omega^2Ae^{i(qna-\omega t)}=\beta(e^{iqa}+e^{-iqa}-2)Ae^{i(qna-\omega t)}$$ $$\omega^2=2\frac{\beta}{M}(1-cosqa)=4\frac{\beta}{M}sin^2(\frac{qa}{2})$$于是得到色散关系$$\omega(q)=2\sqrt{\frac{\beta}{M}}\vert{sin(\frac{qa}{2})}\vert$$最后的频率与n无关，即无穷多个联立方程归结为同一解，也就是满足一定$\omega$与q关系的格波解。
+\par
+一个确定的q和$\omega(q)$确定系统的一个简正模，且相隔pa的原子振动有确定的相位差$$\frac{u_{n+p}}{u_n}=e^{iqpa}$$它表示该格波的位形。且q与q+$K_h$代表同一振动模，因此q取在第一布里渊区范围内，即$-\frac{\pi}{a} \textless q\leq\frac{\pi}{a}$。
+\par
+一维单原子链中频谱成能带结构，一个单原子链，相当于弹性波的低通滤波器。其本征频率必须限制在一个范围内，不存在超过最高频的本征频率。
+
+\subsection{一维双原子链}
+一维双原子链是另一种简单的晶格模型，由质量为M和m($M\textgreater m$)的原子组成双原子链。这是一种复式晶格，每个初基元胞中有两个不同的原子。
+\end{document}
