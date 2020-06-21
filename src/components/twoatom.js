@@ -12,6 +12,7 @@ class TwoAtom extends React.Component {
             q: Math.PI,
             atomsize: 20,
             distance: 100,
+            // 原子质量比m/M，取M=1，则比例m/M=ratio=m
             ratio: 1
         };
         this.handleChangeQ = this.handleChangeQ.bind(this);
@@ -31,6 +32,9 @@ class TwoAtom extends React.Component {
     // 为计算简便取得M=1,故m即为ratio
     // 力常数beta
     u_acoustical(q, l, t, ratio, beta) {
+        while(Math.abs(q) > Math.PI) {
+            q -= 2 * Math.PI;
+        }   
         // 重原子振幅
         let A = 1;
         // 色散关系
@@ -39,6 +43,9 @@ class TwoAtom extends React.Component {
         return A * Math.cos(q * l - omiga * t);
     }
     v_acoustical(q, l, t, ratio, beta) {
+        while(Math.abs(q) > Math.PI) {
+            q -= 2 * Math.PI;
+        }
         // 轻原子振幅, 在布里渊区边界时候为0
         let B = -(1/Math.PI)*Math.abs(q) + 1;
         let m = ratio;
@@ -50,11 +57,17 @@ class TwoAtom extends React.Component {
     u_optical(q, l, t, ratio, beta) {
         let m = ratio;
         // 重原子振幅
+        while(Math.abs(q) > Math.PI) {
+            q -= 2 * Math.PI;
+        }
         let A = (m/Math.PI) * Math.abs(q) - m;
         let omiga = Math.sqrt(beta * (1+1/m) * (1 + Math.sqrt(1-(4/(m+1/m+2))*Math.sin(q/2)*Math.sin(q/2))));
         return A * Math.cos(q * l - omiga * t);
     }
     v_optical(q, l, t, ratio, beta) {
+        while(Math.abs(q) > Math.PI) {
+            q -= 2 * Math.PI;
+        }
         let m = ratio;
         let B = 1;
         let omiga = Math.sqrt(beta * (1+1/m) * (1 + Math.sqrt(1-(4/(m+1/m+2))*Math.sin(q/2)*Math.sin(q/2))));
@@ -173,17 +186,17 @@ class TwoAtom extends React.Component {
         return (
             <div>
                 <Row>
-                    <Col span={3} style={{ overflow: "hidden"}}>原子对数(0,100)：</Col>
+                    <Col span={3} style={{ overflow: "hidden"}}>原子对数(0,200)：</Col>
                     <Col span={4}>
-                        <InputNumber min={1} max={100} onChange={this.handleChangeN} defaultValue={7}></InputNumber>
+                        <InputNumber min={1} max={200} onChange={this.handleChangeN} defaultValue={7}></InputNumber>
                     </Col>
                     <Col span={3} style={{ overflow: "hidden"}}>原子大小：</Col>
                     <Col span={4}>
-                        <InputNumber min={5} max={100} onChange={this.handleChangeSize} defaultValue={20}></InputNumber>
+                        <InputNumber min={3} max={100} onChange={this.handleChangeSize} defaultValue={20}></InputNumber>
                     </Col>
                     <Col span={3} style={{ overflow: "hidden"}}>原子间距：</Col>
                     <Col span={4}>
-                        <InputNumber min={20} max={300} onChange={this.handleChangeDistance} defaultValue={100}></InputNumber>
+                        <InputNumber min={10} max={300} onChange={this.handleChangeDistance} defaultValue={100}></InputNumber>
                     </Col>
                 </Row>
                 <br></br>

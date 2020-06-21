@@ -46,12 +46,12 @@ class App extends React.Component {
                   <SubMenu key="crystal" icon={<MinusSquareOutlined />} title="晶体">
                     <Menu.Item key="coordinate"><Link to="/crystal/coordinate">坐标转换</Link></Menu.Item>
                     <Menu.Item key="symmetry"><Link to="/crystal/symmetry">对称操作</Link></Menu.Item>
-                    <Menu.Item key="5">and so on</Menu.Item>
+                    {/* <Menu.Item key="5">and so on</Menu.Item> */}
                   </SubMenu>
                   <SubMenu key="phonon" icon={<SmileOutlined />} title="声子">
                     <Menu.Item key="one-atom"><Link to="/phonon/one-atom">一维单原子链模拟</Link></Menu.Item>
                     <Menu.Item key="two-atom"><Link to="/phonon/two-atom">一维双原子链模拟</Link></Menu.Item>
-                    <Menu.Item key="8">and so on</Menu.Item>
+                    {/* <Menu.Item key="8">and so on</Menu.Item> */}
                   </SubMenu>
               </Menu>
             </HashRouter>

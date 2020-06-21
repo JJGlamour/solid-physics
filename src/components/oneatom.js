@@ -9,7 +9,7 @@ class OneAtom extends React.Component {
         super(props);
         this.state = {
             // 默认五个原子
-            n: 5,
+            n: 10,
             // 默认波矢
             q: Math.PI,
             atomsize: 20,
@@ -121,17 +121,17 @@ class OneAtom extends React.Component {
         return (
             <div>
                 <Row>
-                    <Col span={3} style={{ overflow: "hidden"}}>原子数(0,100)：</Col>
+                    <Col span={3} style={{ overflow: "hidden"}}>原子数(0,300)：</Col>
                     <Col span={4}>
-                        <InputNumber min={1} max={100} onChange={this.handleChangeN} defaultValue={5}></InputNumber>
+                        <InputNumber min={1} max={300} onChange={this.handleChangeN} defaultValue={10}></InputNumber>
                     </Col>
                     <Col span={3} style={{ overflow: "hidden"}}>原子大小：</Col>
                     <Col span={4}>
-                        <InputNumber min={5} max={100} onChange={this.handleChangeSize} defaultValue={20}></InputNumber>
+                        <InputNumber min={3} max={100} onChange={this.handleChangeSize} defaultValue={20}></InputNumber>
                     </Col>
                     <Col span={3} style={{ overflow: "hidden"}}>原子间距：</Col>
                     <Col span={4}>
-                        <InputNumber min={10} max={500} onChange={this.handleChangeDistance} defaultValue={100}></InputNumber>
+                        <InputNumber min={5 } max={500} onChange={this.handleChangeDistance} defaultValue={100}></InputNumber>
                     </Col>
                 </Row>
                 <br></br>
@@ -140,12 +140,12 @@ class OneAtom extends React.Component {
                         波矢(-π,π)：
                     </Col>
                     <Col span={8}>
-                        <Slider min={-Math.PI} max={Math.PI} step={0.01} defaultValue={Math.PI} onChange={this.handleChangeQ} tooltipVisible/>
+                        <Slider min={-Math.PI} max={3*Math.PI} step={0.01} defaultValue={Math.PI} onChange={this.handleChangeQ} tooltipVisible/>
                     </Col>                                    
                 </Row>
                 <br></br>
+                <Button type="primary" shape="round" onClick={this.move} icon={<CaretRightOutlined />}>开始模拟</Button>
                 <Row>
-                    <Button type="primary" shape="round" onClick={this.move} icon={<CaretRightOutlined />}>开始模拟</Button>
                     <Box></Box>
                 </Row>
                 <Row>
