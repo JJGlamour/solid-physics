@@ -6,9 +6,19 @@
 \usepackage{cases}
 \usepackage{array}
 \usepackage{listings}
-\lstset{language=Python}
+%\lstset{language=Python}
 \lstset{breaklines}
 \lstset{extendedchars=false}
+\lstset{
+    %backgroundcolor=\color{red!50!green!50!blue!50},%代码块背景色为浅灰色
+    rulesepcolor= \color{gray}, %代码块边框颜色
+    breaklines=true,  %代码过长则换行
+    numbers=left, %行号在左侧显示
+    numberstyle= \small,%行号字体
+    keywordstyle= \color{blue},%关键字颜色
+    commentstyle=\color{gray}, %注释颜色
+    frame=shadowbox%用方框框住代码块
+    }
 \setcounter{MaxMatrixCols}{14}
 \usepackage[colorlinks,linkcolor=black]{hyperref}
 \usepackage{geometry}
@@ -37,5 +47,62 @@
 一维单原子链中频谱成能带结构，一个单原子链，相当于弹性波的低通滤波器。其本征频率必须限制在一个范围内，不存在超过最高频的本征频率。
 
 \subsection{一维双原子链}
-一维双原子链是另一种简单的晶格模型，由质量为M和m($M\textgreater m$)的原子组成双原子链。这是一种复式晶格，每个初基元胞中有两个不同的原子。
+一维双原子链是另一种简单的晶格模型，由质量为M和m($M\textgreater m$)的原子组成双原子链。这是一种复式晶格，每个初基元胞中有两个不同的原子。令晶格常数为a，只考虑最紧邻作用，则两者的位移分别为$$M\frac{\mathrm{d}^2u_n}{\mathrm{d}t^2}=\beta(v_n+v_{n-1}-2u_n)$$ $${}m\frac{\mathrm{d}^2v_n}{\mathrm{d}t^2}=\beta(u_n+u_{n+1}-2v_n)$$
+再根据格波解$$u_n=Ae^{i(qna-\omega t)}$$ $$v_n=Be^{i(qna-\omega t)}$$带入运动方程以后得到$$-\omega^2MA=\beta B(1+e^{-iqa})-2\beta A$$ $$-\omega^2mB=\beta A(1+e^{iqa})-2\beta B$$
+要使得该方程有解，则系数行列式为0
+$$\\
+\left|\begin{array}{cccc} 
+    2\beta-\omega^2    &    -\beta(1+e^{-iqa})     \\ 
+    -\beta(1+e^{iqa})  &    2\beta-m\omega^2        \\ 
+\end{array}\right| 
+=Mm\omega ^4-2\beta(M+m)\omega^2+4\beta^2sin^2\frac{qa}{2}$$
+于是得到频率$$\omega_\pm^2=\beta\frac{m+M}{mM}{\{1\pm[1-\frac{4mM}{(m+M)^2}sin^2\frac{qa}{2}]\}}$$
+再将频率带入运动方程，即得到轻重原子的振幅之比$$\alpha_\pm={(\frac{B}{A}})_\pm=-\frac{M\omega_\pm^2-2\beta}{\beta(1+e^{-iqa})}$$
+\par
+其中$\omega_-$这一支称为声学支，$\omega_+$这一支称为光学支。对于小q，即在布里渊区中心处，声学支的波的群速度等于相速度：$\frac{\mathrm{d}\omega}{\mathrm{d}q}=\frac{\omega}{q}=c$，且其与频率无关，表现为长波长弹性波，两原子振幅之比$\alpha_-=\frac{B}{A}\approx1$；对于光学支，布里渊区中心处$\omega_+=\sqrt{\frac{2\beta}{\mu}}$，原子振幅之比$\alpha_+=\frac{B}{A}=\frac{M\omega_+^2-2\beta}{2\beta}\approx-\frac{M}{m}$，可见光学支在布里渊区中心处频率由力常数和折合质量决定，同时轻重原子振动方向相反，即两者相对运动而质心保持不动。而在布里渊区边界处，即q接近$\pm\frac{\pi}{a}$时，
+$$\omega_-=\sqrt{\frac{2\beta}{M}},\quad\alpha_-=\frac{B}{A}\approx0$$
+$$\omega_+=\sqrt{\frac{2\beta}{m}},\quad\alpha_+=\frac{B}{A}\approx\infty$$
+显而易见，声学支只有重原子在振动，轻原子几乎不动，振动频率只与M有关；而光学支只有轻原子在振动，重原子保持不动，频率只与m有关。
+
+
+\section{程序的设计}
+
+\subsection{一维单原子链参数选取}
+经上述推导计算已得出一维单原子链色散关系$$\omega(q)=2\sqrt{\frac{\beta}{M}}\vert{sin(\frac{qa}{2})}\vert$$在不考虑量纲的情况下，取晶格常数a=1，为其在页面上显示频率易于肉眼可见，取$2\sqrt{\frac{\beta}{M}}=\frac{1}{50}$，为换算到像素单位(px)再取A=70，于是根据$$\omega(q)=\frac{1}{50}\vert{sin(\frac{q}{2})}\vert,\quad u_l=70e^{i(qna-\omega t)}=70[cos(qna-\omega t)+isin(qna-\omega t)]$$实际模拟时从t=0时刻开始，每隔1ms根据$u_l$的实部计算一次每个原子偏移的位置，以像素为单位在屏幕上使原子移动相应的距离，随着时间的逐步增加，即可在页面上看到原子连续的振动效果。每次调节波矢q，则系统再次从t=0时刻开始新的模拟。控制原子移动的代码如下：
+\begin{lstlisting}
+        const q = Math.PI;
+        let t = 0;
+        let elements = [];
+        function moveOneAtom(elem, y) {
+            elem.style.bottom = y + "px";
+        }
+        for(let i=0; i < this.state.n; i++){
+            elements.push(document.querySelector(`#atom${i}`));
+        }
+        this.timerID = setInterval(() => {
+            for(let i = 0; i < this.state.n; i++) {
+                let y = Math.cos(q *(i+1)  - (1/50) * Math.abs(Math.sin(q/2)) * t);
+                console.log(`${i}原子:${String(y).substr(0,8)}`);
+                moveOneAtom(elements[i], y * 70);
+            }
+            t++;
+        }, 1);
+\end{lstlisting}
+
+\subsection{一维双原子链的参数选取及近似处理}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 \end{document}
