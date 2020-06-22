@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu} from 'antd';
 import 'antd/dist/antd.css';
 import {
   MenuUnfoldOutlined,
@@ -10,7 +10,7 @@ import {
   SmileOutlined
 } from '@ant-design/icons';
 
-import { BrowserRouter as Router, Route, Link, HashRouter} from "react-router-dom";
+import { Redirect, Route, Link, HashRouter, Switch} from "react-router-dom";
 import Home from "./components/home";
 import Coordinate from "./components/coordinate";
 import OneAtom from "./components/oneatom";
@@ -70,15 +70,18 @@ class App extends React.Component {
               padding: 24,
             }}
           >
-          <HashRouter>
-            <div>
-              <Route path="/home" component={Home}></Route>
-              <Route path="/crystal/coordinate" component={Coordinate}></Route>
-              <Route path="/crystal/symmetry" component={Symmetry}></Route>
-              <Route path="/phonon/one-atom" component={OneAtom}></Route>
-              <Route path="/phonon/two-atom" component={TwoAtom}></Route>
-            </div>
-          </HashRouter>
+            <HashRouter>
+                <div>
+                  <Switch>
+                    <Redirect from="/" to="/home" exact />
+                    <Route path="/home" component={Home}></Route>
+                    <Route path="/crystal/coordinate" component={Coordinate}></Route>
+                    <Route path="/crystal/symmetry" component={Symmetry}></Route>
+                    <Route path="/phonon/one-atom" component={OneAtom}></Route>
+                    <Route path="/phonon/two-atom" component={TwoAtom}></Route>   
+                  </Switch>
+                </div>
+            </HashRouter>
           </Content>
         </Layout>
       </Layout> 
