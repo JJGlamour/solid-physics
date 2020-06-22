@@ -24,10 +24,13 @@ class Home extends React.Component {
                    2. 计算及模拟的公式均来自于教材-固体物理学，胡安，章维益，第二版；
                </p>
                <p>
-                   3. 项目源码：<Button href="https://github.com/JJGlamour/solid-physics" target="blank" type="link">https://github.com/JJGlamour/solid-physics</Button>
+                   3. 由于本程序依赖JavaScript的新标准(ECMAScript 6.0)中的部分特有类型，故该程序暂不兼容IE 11(对JS新标准实现不规范)及以下版本的旧浏览器与设备；
                </p>
                <p>
-                   4. 有问题联系QQ：88106827。
+                   4. 项目源码：<Button href="https://github.com/JJGlamour/solid-physics" target="blank" type="link">https://github.com/JJGlamour/solid-physics</Button>
+               </p>
+               <p>
+                   5. 有问题联系QQ：88106827。
                </p>
            </div>
        )

@@ -22,12 +22,19 @@ class TwoAtom extends React.Component {
         this.handleChangeRatio = this.handleChangeRatio.bind(this);
         this.move = this.move.bind(this);
     }
+    componentDidMount() {
+        console.log("componentDidMount...");
+    }
+    componentDidUpdate() {
+        // 如无需手动触发则可以在此处自动触发
+        console.log("componentDidUpdate......");
+    }
     componentWillUnmount() {
+        console.log("componentWillUnmount");
         // !!!
         // 不清除则会存在内存泄漏问题，导致页面占用内存过大
         clearInterval(this.timerID);
     }
-
     // 声学支轻重原子,q为波矢,ratio为m/M,u表示重原子M偏移,v表示轻原子m偏移
     // 为计算简便取得M=1,故m即为ratio
     // 力常数beta
