@@ -1,6 +1,6 @@
 ## Available Scripts
 
-在项目目录下，你可以这样执行命令:
+在利用```npm install```或```yarn install```安装好项目依赖的package以后，在项目目录下，你可以这样执行命令:
 
 ### `yarn start`
 
@@ -37,7 +37,6 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ### 备注
 
-- document文件夹下面为项目的论文介绍
-- build目录为项目编译打包后的文件
-- 以上命令的运行均需利用yarn或npm包管理工具安装依赖以后方可执行
+- document文件夹下面为项目的论文源文件
+- build目录下的文件为项目编译打包后的文件，可将其放置于web服务器相应目录下自行部署
 - over
