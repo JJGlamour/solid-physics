@@ -6,11 +6,17 @@
 \usepackage{cases}
 \usepackage{array}
 \usepackage{listings}
-%\lstset{language=Python}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue,
+    citecolor=cyan,
+}
 \lstset{breaklines}
 \lstset{extendedchars=false}
 \lstset{
-    %backgroundcolor=\color{red!50!green!50!blue!50},%代码块背景色为浅灰色
     rulesepcolor= \color{gray}, %代码块边框颜色
     breaklines=true,  %代码过长则换行
     numbers=left, %行号在左侧显示
@@ -20,7 +26,6 @@
     frame=shadowbox%用方框框住代码块
     }
 \setcounter{MaxMatrixCols}{14}
-\usepackage[colorlinks,linkcolor=black]{hyperref}
 \usepackage{geometry}
 \setlength{\arraycolsep}{0.5pt}
 \geometry{left=3.0cm,right=3.0cm,top=2.5cm,bottom=2.5cm}
@@ -31,7 +36,7 @@
 \maketitle
 
 \begin{abstract}
-在周期晶格中存在类波解，由于晶格的不连续性，波的振幅只在原子的格点上有定义，也就是格波。一个包括3N个自由度的周期性结构，存在3N个独立的简正模，等价于3N个独立的格波。在一维单原子链和一维双原子链中主要考虑最简单的晶格模型，即每个元胞中只有一个原子和两个原子。本文主要在计算求得一维单原子链和双原子链的色散关系的基础之上，通过其各自的格波解对原子偏移平衡位置情况进行模拟。程序采用基于JavaScript的React.js库编写，可在web上直接查看振动效果，且可动态调节波矢q和双原子质量比m/M。 \\
+在周期晶格中存在类波解，由于晶格的不连续性，波的振幅只在原子的格点上有定义，也就是格波。一个包括3N个自由度的周期性结构，存在3N个独立的简正模，等价于3N个独立的格波。在一维单原子链和一维双原子链中主要考虑最简单的晶格模型，即每个元胞中只有一个原子和两个原子。本文主要在计算求得一维单原子链和双原子链的色散关系的基础之上，通过其各自的格波解对原子偏移平衡位置情况进行模拟。程序采用JavaScript编写，可在web上直接查看振动效果，且可动态调节波矢q和双原子质量比m/M。 \\
 \par\textbf{关键词: } 格波；一维单原子链；一维双原子链；色散关系；JavaScript
 \end{abstract}
 
@@ -68,7 +73,7 @@ $$\omega_+=\sqrt{\frac{2\beta}{m}},\quad\alpha_+=\frac{B}{A}\approx\infty$$
 \section{程序的设计}
 
 \subsection{一维单原子链参数选取}
-经上述推导计算已得出一维单原子链色散关系$$\omega(q)=2\sqrt{\frac{\beta}{M}}\vert{sin(\frac{qa}{2})}\vert$$在不考虑量纲的情况下，取晶格常数a=1，为其在页面上显示频率易于肉眼可见，取$2\sqrt{\frac{\beta}{M}}=\frac{1}{50}$，为换算到像素单位(px)再取A=70，于是根据$$\omega(q)=\frac{1}{50}\vert{sin(\frac{q}{2})}\vert,\quad u_l=70e^{i(qna-\omega t)}=70[cos(qna-\omega t)+isin(qna-\omega t)]$$实际模拟时从t=0时刻开始，每隔1ms根据$u_l$的实部计算一次每个原子偏移的位置，以像素为单位在屏幕上使原子移动相应的距离，随着时间的逐步增加，即可在页面上看到原子连续的振动效果。每次调节波矢q，则系统再次从t=0时刻开始新的模拟。控制原子移动的代码如下：
+经上述推导计算已得出一维单原子链色散关系$$\omega(q)=2\sqrt{\frac{\beta}{M}}\vert{sin(\frac{qa}{2})}\vert$$在不考虑量纲的情况下，取晶格常数a=1，为其在页面上显示频率易于肉眼可见，取$2\sqrt{\frac{\beta}{M}}=\frac{1}{50}$，为换算到像素单位(px)再取A=70，于是根据$$\omega(q)=\frac{1}{50}\vert{sin(\frac{q}{2})}\vert,\quad u_n=70e^{i(qna-\omega t)}=70[cos(qna-\omega t)+isin(qna-\omega t)]$$实际模拟时从t=0时刻开始，每隔1ms根据$u_n$的实部计算一次每个原子偏移的位置，以像素为单位在屏幕上使原子移动相应的距离，随着时间的逐步增加，即可在页面上看到原子连续的振动效果。每次调节波矢q，则系统再次从t=0时刻开始新的模拟。控制原子移动的代码如下：
 \begin{lstlisting}
         const q = Math.PI;
         let t = 0;
@@ -90,18 +95,31 @@ $$\omega_+=\sqrt{\frac{2\beta}{m}},\quad\alpha_+=\frac{B}{A}\approx\infty$$
 \end{lstlisting}
 
 \subsection{一维双原子链的参数选取及近似处理}
+一维双原子链色散关系为$$\omega_\pm^2=\beta\frac{m+M}{mM}{\{1\pm[1-\frac{4mM}{(m+M)^2}sin^2\frac{qa}{2}]\}}$$同样在无量纲的情况下，取晶格常数a=1，重原子质量M,于是$\frac{m}{M}=m$，m取值范围为$0\textless m \textless1$，为显示直观，再取力常数$\beta=\frac{1}{1000}$，于是色散关系为
+$$\omega_\pm^2=\frac{1}{1000}\frac{m+1}{m}{\{1\pm[1-\frac{4m}{(m+1)^2}sin^2\frac{q}{2}]\}}$$
+显然其中包含两个可动态调节参数：质量比m/M=m和波矢q。
+\par
+在计算振幅时候采取近似处理，对于声学支：布里渊区中心处$\alpha_-=\frac{B}{A}\approx1$，布里渊区边界处$\alpha_-=\frac{B}{A}\approx0$，于是取A=70，则B=$70(-\vert\frac{q}{\pi}\vert+1)$，于是声学支M和m原子的格波解为
+$$u_n=70e^{i(qn-\omega_- t)}=70[cos(qn-\omega_- t)+isin(qn-\omega_- t)]$$
+$$v_n=70(-\frac{q}{\pi}+1)e^{i(qn-\omega_- t)}=70(-\frac{q}{\pi}+1)[cos(qn-\omega_- t)+isin(qn-\omega_- t)]$$
+仍然从t=0时刻开始，根据$u_n$和$v_n$的实部每隔1ms计算一次各个原子的偏移量，然后以像素为单位使原子位置在页面上重新渲染，即可得到原子链直观的振动现象。
+\par
+对于光学支：布里渊区中心处$\alpha_+=\frac{B}{A}=\frac{M\omega_+^2-2\beta}{2\beta}\approx-\frac{M}{m}=-\frac{1}{m}$，布里渊区边界处$\alpha_+=\frac{B}{A}\approx\infty$，于是取B=70，A=$70(\frac{m}{\pi}\vert q\vert -m)$，根据格波解
+$$u_n=70(\frac{m}{\pi}\vert q\vert -m)e^{i(qn-\omega_+ t)}=70(\frac{m}{\pi}{\vert q\vert} -m)[cos(qn-\omega_+ t)+isin(qn-\omega_+ t)]$$
+$$v_n=70e^{i(qn-\omega_+ t)}=70[cos(qn-\omega_+ t)+isin(qn-\omega_+ t)]$$
+仍然从t=0时刻开始，根据$u_n$和$v_n$的实部每隔1ms计算一次各个原子的偏移量，然后以像素为单位使原子位置在页面上重新移动渲染。至此即可得到可调节参数q$(-\pi,\pi)$和$\frac{m}{M}(0,1)$的双原子链的振动情况。另外程序还支持调节原子个数n(对数)以及其他页面显示效果(如原子间距、原子大小)。
+
+
+\section{程序使用说明}
+程序也网页形式展示，可在线查看模拟效果：\href{http://47.101.50.208}{http://47.101.50.208}，另外程序还提供任意元胞中任意原子直角坐标和分数坐标转换的功能，本文中未做详细介绍。
+\par
+程序源代码地址：\href{https://github.com/JJGlamour/solid-physics}{https://github.com/JJGlamour/solid-physics}，本程序兼容除IE以外的各大主流浏览器。
 
 
 
-
-
-
-
-
-
-
-
-
+\begin{thebibliography}{99}  
+\bibitem{ref1}胡安, 章维益. 固体物理学, 高等教育出版社, 第二版, 2011.  
+\end{thebibliography}
 
 
 
